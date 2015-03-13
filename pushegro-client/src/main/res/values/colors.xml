@@ -2,4 +2,7 @@
 <resources>
     <item name="pushegro_orange" type="color">#FF5900</item>
     <item name="pushegro_orange_30" type="color">#4DFF5900</item>
+    <item name="pushegro_blue" type="color">#ff158dff</item>
+    <item name="pushegro_blue_dark" type="color">#ff0c5090</item>
+
 </resources>
