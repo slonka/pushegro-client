@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:fab="http://schemas.android.com/apk/res-auto">
+
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="507dp"
+            android:id="@+id/listView" android:layout_alignParentBottom="true" android:layout_alignParentTop="true"/>
+
+    <com.software.shell.fab.ActionButton
+            android:id="@+id/action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            fab:image="@drawable/fab_plus_icon"
+            fab:type="DEFAULT"
+            fab:button_color="@color/pushegro_blue"
+            fab:button_colorPressed="@color/pushegro_blue_dark"
+            />
+</RelativeLayout>
