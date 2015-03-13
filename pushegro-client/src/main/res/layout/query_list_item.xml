@@ -9,12 +9,15 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Zapytanie"
-            android:id="@+id/query_list_text" android:layout_centerVertical="true" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" android:layout_marginLeft="16dp"/>
+            android:id="@+id/query_list_item_text" android:layout_centerVertical="true" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginLeft="16dp"
+            android:layout_toLeftOf="@+id/query_list_item_unvisited"
+            android:layout_toStartOf="@+id/query_list_item_unvisited"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/query_list_unvisited" android:layout_centerVertical="true" android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" android:layout_marginRight="16dp"/>
+            android:id="@+id/query_list_item_unvisited" android:layout_centerVertical="true" android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" android:layout_marginRight="16dp" android:text="2"
+            android:layout_marginLeft="16dp"/>
 </RelativeLayout>
