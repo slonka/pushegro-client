@@ -36,11 +36,28 @@ public class AuctionListAdapter extends ArrayAdapter<AuctionItem> {
         titleTextView.setText(auction.getTitle());
         priceTextView.setText(auction.getPrice());
         lastChangedTextView.setText(lastChanged);
+        importantImageButton.setOnClickListener(new OnImportantClickListener(auction));
 
         if (auction.isImportant()) {
             importantImageButton.setImageResource(R.drawable.auction_favorite_star);
         }
 
         return convertView;
+    }
+
+    private class OnImportantClickListener implements View.OnClickListener {
+
+        private AuctionItem auction;
+
+        public OnImportantClickListener(AuctionItem auction) {
+            this.auction = auction;
+        }
+
+        @Override
+        public void onClick(View v) {
+            auction.flipImportance();
+            ImageButton importantImageButton = (ImageButton) v;
+            importantImageButton.setImageResource(auction.isImportant() ? R.drawable.auction_favorite_star : R.drawable.auction_favorite_star_gray);
+        }
     }
 }

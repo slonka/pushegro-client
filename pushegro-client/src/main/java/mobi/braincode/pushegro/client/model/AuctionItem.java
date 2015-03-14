@@ -47,6 +47,10 @@ public class AuctionItem {
         return price;
     }
 
+    public void flipImportance() {
+        this.important = !important;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
