@@ -7,20 +7,20 @@ import java.util.List;
  */
 public class AuctionList {
 
-    List<Auction> auctionPredicates;
+    List<Auction> auctions;
 
     public AuctionList(List<Auction> auctions) {
-        this.auctionPredicates = auctions;
+        this.auctions = auctions;
     }
 
     public AuctionList() {
     }
 
-    public List<Auction> getAuctionPredicates() {
-        return auctionPredicates;
+    public List<Auction> getAuctions() {
+        return auctions;
     }
 
-    public void setAuctionPredicates(List<Auction> auctionPredicates) {
-        this.auctionPredicates = auctionPredicates;
+    public void setAuctions(List<Auction> auctions) {
+        this.auctions = auctions;
     }
 }

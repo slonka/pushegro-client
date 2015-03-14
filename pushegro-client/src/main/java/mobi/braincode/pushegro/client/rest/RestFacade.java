@@ -63,7 +63,7 @@ public class RestFacade {
             HttpResponse response = RestSender.get(urlFor(username) + "/" + predicateId);
             String json = EntityUtils.toString(response.getEntity());
             AuctionList auctionList = gson.fromJson(json, AuctionList.class);
-            return auctionList.getAuctionPredicates();
+            return auctionList.getAuctions();
         } catch (Exception e) {
             Log.e("Response error", e.getMessage());
 //            return "Unsuccessful registering";
