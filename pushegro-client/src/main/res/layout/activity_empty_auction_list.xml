@@ -3,17 +3,10 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-
     <TextView
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textap
             android:id="@+id/empty_auctions_text" android:layout_centerVertical="true" android:layout_centerHorizontal="true"
-            android:text="Trochę tu pusto"/>
-    <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wyszukaj coś"
-            android:id="@+id/empty_auctions_search" android:layout_below="@+id/empty_auctions_text" android:layout_centerHorizontal="true"/>
+            android:text="Trochę tu pusto" android:textAppearance="?android:attr/textAppearanceMedium"/>
 </RelativeLayout>
