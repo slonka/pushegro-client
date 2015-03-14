@@ -14,11 +14,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.software.shell.fab.ActionButton;
+import mobi.braincode.pushegro.client.gcm.GcmIntentService;
+import mobi.braincode.pushegro.client.model.AuctionItem;
 import mobi.braincode.pushegro.client.model.QueryItem;
 import mobi.braincode.pushegro.client.repository.SharedPreferencesFacade;
+import mobi.braincode.pushegro.client.repository.SharedPreferencesProperties;
 import mobi.braincode.pushegro.client.rest.RestFacade;
+import mobi.braincode.pushegro.client.rest.task.AllAuctionsAsyncTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static mobi.braincode.pushegro.client.repository.SharedPreferencesProperties.PROPERTY_USERNAME;
@@ -36,6 +41,14 @@ public class QueryListActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
         queryListAdapter = new QueryListAdapter(this, queryItems);
+
+        Intent intent = getIntent();
+        String predicatesToUpdate = intent.getStringExtra(GcmIntentService.SERVER_MESSAGE);
+        if (predicatesToUpdate != null) {
+            List<String> queryIds = Arrays.asList(predicatesToUpdate.split(","));
+            String username = SharedPreferencesFacade.getString(getApplicationContext(), SharedPreferencesProperties.PROPERTY_USERNAME);
+            new AllAuctionsAsyncTask(username, queryIds, this).execute();
+        }
 
         refreshActivity();
     }
@@ -154,4 +167,10 @@ public class QueryListActivity extends ActionBarActivity {
                     .show();
         }
     }
+
+    public void updateAuctions(List<AuctionItem> auctions) {
+
+
+    }
+
 }
