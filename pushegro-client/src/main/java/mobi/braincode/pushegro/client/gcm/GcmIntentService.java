@@ -12,7 +12,6 @@ import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import mobi.braincode.pushegro.client.AuctionListActivity;
 import mobi.braincode.pushegro.client.LoginActivity;
 import mobi.braincode.pushegro.client.QueryListActivity;
 import mobi.braincode.pushegro.client.R;
