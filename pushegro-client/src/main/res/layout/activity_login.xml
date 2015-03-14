@@ -18,20 +18,20 @@
             android:id="@+id/login_icon"
             android:src="@drawable/icon_start"
             android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"/>
+            android:layout_marginTop="35dp"/>
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText" android:layout_centerVertical="true" android:layout_centerHorizontal="true"
+            android:id="@+id/editText"
             android:layout_marginLeft="16dp" android:layout_marginRight="16dp" android:hint="Nazwa użytkownika"
             android:background="@color/pushegro_orange_30"
             android:paddingTop="10dp" android:paddingBottom="10dp" android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
+            android:layout_below="@+id/login_icon"
             android:paddingLeft="10dp"/>
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Push"
+            android:text="Push me"
             android:id="@+id/button"
             android:background="@color/pushegro_orange"
             android:layout_below="@+id/editText"
