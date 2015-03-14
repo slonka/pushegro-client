@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.software.shell.fab.ActionButton;
@@ -17,82 +18,46 @@ import mobi.braincode.pushegro.client.repository.SharedPreferencesFacade;
 import mobi.braincode.pushegro.client.rest.RestFacade;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static mobi.braincode.pushegro.client.repository.SharedPreferencesProperties.PROPERTY_USERNAME;
 
 
 public class QueryListActivity extends ActionBarActivity {
 
-    ActionButton addButton;
-    ArrayList<QueryItem> queryItems = new ArrayList<>();
+    List<QueryItem> queryItems;
+    QueryListAdapter queryListAdapter;
 
     Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_query_list);
-
         context = getApplicationContext();
 
-        final QueryListAdapter queryListAdapter = new QueryListAdapter(this, queryItems);
+        queryItems = new ArrayList<>();
+//        queryItems.add(new QueryItem("Maczeta JP2", 1));
+//        queryItems.add(new QueryItem("Komiksy Dragon Ball", 2));
+        queryListAdapter = new QueryListAdapter(this, queryItems);
 
-        ListView listView = (ListView) findViewById(R.id.query_list);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                queryItems.remove(position);
-                queryListAdapter.notifyDataSetChanged();
-                return true;
-            }
-        });
+        refreshActivity();
+    }
 
-        listView.setAdapter(queryListAdapter);
+    private void refreshActivity() {
+        if (queryItems.isEmpty()) {
+            setContentView(R.layout.activity_empty_query_list);
+            Button emptyAddButton = (Button) findViewById(R.id.empty_query_list_search);
+            emptyAddButton.setOnClickListener(new OnAddButtonClickListener(queryListAdapter));
 
-        addButton = (ActionButton) findViewById(R.id.query_list_add_query);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Set up the input
-                final EditText input = new EditText(v.getContext());
+        } else {
+            setContentView(R.layout.activity_query_list);
+            ListView listView = (ListView) findViewById(R.id.query_list);
+            listView.setOnItemLongClickListener(new OnQueryLongClickListener(queryListAdapter));
+            listView.setAdapter(queryListAdapter);
 
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                input.setPadding(20, 0, 20, 20);
-                input.setHint("Tytuł aukcji");
-
-                new AlertDialog.Builder(v.getContext())
-                        .setTitle("Wyszukiwanie")
-                                // Specify the list array, the items to be selected by default (null for none),
-                                // and the listener through which to receive callbacks when items are selected
-                        .setView(input)
-                                // Set the action buttons
-                        .setPositiveButton("Dodaj", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                String text = input.getText().toString();
-                                if (!text.trim().isEmpty()) {
-                                    // TODO add validation
-                                    QueryItem queryItem = new QueryItem(text, 0);
-
-                                    String username = SharedPreferencesFacade.getString(context, PROPERTY_USERNAME);
-
-                                    RestFacade.addWatcher(username, queryItem);
-
-                                    queryItems.add(queryItem);
-
-                                    queryListAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        })
-                        .setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-
-                            }
-                        })
-                        .show();
-            }
-        });
+            ActionButton addButton = (ActionButton) findViewById(R.id.query_list_add_query);
+            addButton.setOnClickListener(new OnAddButtonClickListener(queryListAdapter));
+        }
     }
 
     @Override
@@ -115,5 +80,74 @@ public class QueryListActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class OnQueryLongClickListener implements AdapterView.OnItemLongClickListener {
+
+        private QueryListAdapter queryListAdapter;
+
+        private OnQueryLongClickListener(QueryListAdapter queryListAdapter) {
+            this.queryListAdapter = queryListAdapter;
+        }
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            queryListAdapter.remove(queryListAdapter.getItem(position));
+            queryListAdapter.notifyDataSetChanged();
+            refreshActivity();
+            return true;
+        }
+    }
+
+    private class OnAddButtonClickListener implements View.OnClickListener {
+
+        QueryListAdapter queryListAdapter;
+
+        public OnAddButtonClickListener(QueryListAdapter queryListAdapter) {
+            this.queryListAdapter = queryListAdapter;
+        }
+
+        @Override
+        public void onClick(View v) {
+            // Set up the input
+            final EditText input = new EditText(v.getContext());
+
+            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+            input.setPadding(20, 0, 20, 20);
+            input.setHint("Tytuł aukcji");
+
+            new AlertDialog.Builder(v.getContext())
+                    .setTitle("Wyszukiwanie")
+                            // Specify the list array, the items to be selected by default (null for none),
+                            // and the listener through which to receive callbacks when items are selected
+                    .setView(input)
+                            // Set the action buttons
+                    .setPositiveButton("Dodaj", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            String text = input.getText().toString();
+                            if (!text.trim().isEmpty()) {
+                                // TODO add validation
+                                QueryItem queryItem = new QueryItem(text, 0);
+
+                                String username = SharedPreferencesFacade.getString(context, PROPERTY_USERNAME);
+
+                                RestFacade.addWatcher(username, queryItem);
+
+                                queryItems.add(queryItem);
+
+                                queryListAdapter.notifyDataSetChanged();
+                                refreshActivity();
+                            }
+                        }
+                    })
+                    .setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    })
+                    .show();
+        }
     }
 }

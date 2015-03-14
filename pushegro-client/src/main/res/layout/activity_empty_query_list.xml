@@ -8,12 +8,15 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/empty_auctions_text" android:layout_centerVertical="true" android:layout_centerHorizontal="true"
-            android:text="Trochę tu pusto"/>
+            android:id="@+id/empty_query_list_text"
+            android:text="Trochę tu pusto"
+            android:layout_above="@+id/empty_query_list_search"
+            android:layout_centerHorizontal="true"/>
     <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wyszukaj coś"
-            android:id="@+id/empty_auctions_search" android:layout_below="@+id/empty_auctions_text" android:layout_centerHorizontal="true"/>
+            android:id="@+id/empty_query_list_search" android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
 </RelativeLayout>

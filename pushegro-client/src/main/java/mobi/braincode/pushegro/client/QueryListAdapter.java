@@ -8,11 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import mobi.braincode.pushegro.client.model.QueryItem;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class QueryListAdapter extends ArrayAdapter<QueryItem> {
 
-    public QueryListAdapter(Context context, ArrayList<QueryItem> users) {
+    public QueryListAdapter(Context context, List<QueryItem> users) {
         super(context, 0, users);
     }
 
