@@ -281,14 +281,16 @@ public class QueryListActivity extends ActionBarActivity {
     public void updateAuctions(Map<String, List<AuctionItem>> auctions) {
         for (Map.Entry<String, List<AuctionItem>> queryId : auctions.entrySet()) {
             QueryItem foundQueryItem = QueryRepository.findById(queryId.getKey());
-            foundQueryItem.setUnvisitedCount(queryId.getValue().size());
-            queryListAdapter.notifyDataSetChanged();
+            if(foundQueryItem != null) {
+                foundQueryItem.setUnvisitedCount(queryId.getValue().size());
+                queryListAdapter.notifyDataSetChanged();
 
-            ArrayList<AuctionUpdate> auctionUpdates = AuctionsUpdater.getDifference(foundQueryItem.getAuctionItems(),
-                    queryId.getValue());
+                ArrayList<AuctionUpdate> auctionUpdates = AuctionsUpdater.getDifference(foundQueryItem.getAuctionItems(),
+                        queryId.getValue());
 
 
-            updateAuctionList(auctionUpdates, foundQueryItem.getAuctionItems());
+                updateAuctionList(auctionUpdates, foundQueryItem.getAuctionItems());
+            }
         }
     }
 
