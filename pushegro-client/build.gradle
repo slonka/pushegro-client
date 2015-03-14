@@ -10,6 +10,7 @@ apply plugin: 'com.android.application'
 
 repositories {
     jcenter()
+    mavenCentral()
 }
 
 android {
@@ -41,6 +42,7 @@ dependencies {
     compile 'com.github.shell-software:fab:1.0.5'
     compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.mcxiaoke.volley:library:1.0.+'
+    compile 'com.hudomju:swipe-to-dismiss-undo:1.0'
     compile 'com.google.code.gson:gson:2.2.+'
     compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
 }

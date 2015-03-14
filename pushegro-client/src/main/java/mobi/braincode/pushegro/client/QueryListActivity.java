@@ -13,10 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.*;
+import com.hudomju.swipe.SwipeToDismissTouchListener;
+import com.hudomju.swipe.adapter.ListViewAdapter;
+import com.hudomju.swipe.adapter.ViewAdapter;
 import com.software.shell.fab.ActionButton;
 import mobi.braincode.pushegro.client.gcm.GcmIntentService;
 import mobi.braincode.pushegro.client.model.AuctionItem;
@@ -73,12 +73,51 @@ public class QueryListActivity extends ActionBarActivity {
 
         } else {
             setContentView(R.layout.activity_query_list);
+
             ListView listView = (ListView) findViewById(R.id.query_list);
+
+            final SwipeToDismissTouchListener touchListener =
+                    new SwipeToDismissTouchListener(
+                            new ListViewAdapter(listView),
+                            new SwipeToDismissTouchListener.DismissCallbacks() {
+                                @Override
+                                public boolean canDismiss(int position) {
+                                    return true;
+                                }
+
+                                @Override
+                                public void onDismiss(ViewAdapter viewAdapter, final int i) {
+
+                                    new AsyncTask<QueryItem, Void, Void>() {
+
+                                        @Override
+                                        protected Void doInBackground(QueryItem... params) {
+                                            RestFacade.removeWatcher(SharedPreferencesProperties.PROPERTY_USERNAME, queryListAdapter.getItem(i).getId());
+                                            return null;
+                                        }
+
+                                        @Override
+                                        protected void onPostExecute(Void v) {
+                                            Log.e(this.getClass().getSimpleName(), ">>>>>> Post execute");
+                                            onCancelled();
+                                            queryListAdapter.remove(queryListAdapter.getItem(i));
+                                        }
+                                    }.execute(queryListAdapter.getItem(i));
+                                }
+                            });
+
+            listView.setOnTouchListener(touchListener);
+            listView.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
+
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(QueryListActivity.this, AuctionListActivity.class);
-                    startActivity(intent);
+                    if (touchListener.existPendingDismisses()) {
+                        touchListener.undoPendingDismiss();
+                    } else {
+                        Intent intent = new Intent(QueryListActivity.this, AuctionListActivity.class);
+                        startActivity(intent);
+                    }
                 }
             });
             listView.setOnItemLongClickListener(new OnQueryLongClickListener(queryListAdapter));

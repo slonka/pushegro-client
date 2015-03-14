@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import mobi.braincode.pushegro.client.model.Auction;
 import mobi.braincode.pushegro.client.model.AuctionList;
 import mobi.braincode.pushegro.client.model.QueryItem;
+import mobi.braincode.pushegro.client.model.AuctionItem;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
@@ -56,7 +57,24 @@ public class RestFacade {
         return responseText;
     }
 
-    public static List<Auction> getAuctions(String username, String predicateId) {
+    public static String removeWatcher(String username, int predicateId) {
+        String responseText = null;
+        try {
+
+            responseText = sendDeleteRequest(urlFor(username) + "/" + predicateId);
+
+            Log.i("Response received", responseText);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("Response error", e.getMessage());
+            return "Unsuccessful registering";
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return responseText;
+    }
+
+    public static List<AuctionItem> getAuctions(String username, String predicateId) {
         String responseText = null;
         try {
             Gson gson = new Gson();
@@ -73,6 +91,12 @@ public class RestFacade {
 
     private static String sendRequest(String url, JSONObject jsonObject) throws IOException, ExecutionException, InterruptedException {
         HttpResponse response = RestSender.post(url, jsonObject);
+        // TODO proper error handling - check response status
+        return EntityUtils.toString(response.getEntity());
+    }
+
+    private static String sendDeleteRequest(String url) throws IOException, ExecutionException, InterruptedException {
+        HttpResponse response = RestSender.delete(url);
         // TODO proper error handling - check response status
         return EntityUtils.toString(response.getEntity());
     }
