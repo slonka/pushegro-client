@@ -17,11 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.software.shell.fab.ActionButton;
-import mobi.braincode.pushegro.client.model.QueryItem;
+import mobi.braincode.pushegro.client.model.*;
 import mobi.braincode.pushegro.client.repository.SharedPreferencesFacade;
 import mobi.braincode.pushegro.client.rest.RestFacade;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static mobi.braincode.pushegro.client.repository.SharedPreferencesProperties.PROPERTY_USERNAME;
@@ -64,6 +65,44 @@ public class QueryListActivity extends ActionBarActivity {
 
             ActionButton addButton = (ActionButton) findViewById(R.id.query_list_add_query);
             addButton.setOnClickListener(new OnAddButtonClickListener(queryListAdapter));
+        }
+    }
+
+    public void udpateQueryList(QueryItem queryItem, List<AuctionItem> remoteAuctionItemList) {
+        int auctionsCount = remoteAuctionItemList.size();
+        for(QueryItem item : queryItems) {
+            if(queryItem.getId() == item.getId()) {
+                item.setUnvisitedCount(item.getUnvisitedCount());
+                List<AuctionItem> auctionItems = item.getAuctionItemList();
+                ArrayList<AuctionUpdate> auctionUpdates = AuctionsUpdater.getDifference(auctionItems, remoteAuctionItemList);
+                updateAuctionList(auctionUpdates, auctionItems);
+                break;
+            }
+        }
+        queryListAdapter.notifyDataSetChanged();
+    }
+
+    public void updateAuctionList(ArrayList<AuctionUpdate> auctionUpdates, List<AuctionItem> auctionItems) {
+        Iterator<AuctionUpdate> auctionUpdateIterator = auctionUpdates.iterator();
+
+        for(AuctionUpdate auctionUpdate : auctionUpdates) {
+            if(auctionUpdate.getAuctionStatus() == AuctionStatus.NEW) {
+                auctionItems.add(auctionUpdate.getAuctionItem());
+            } else {
+                AuctionItem found = null;
+                for(AuctionItem item : auctionItems) {
+                    if(auctionUpdate.getAuctionItem().getId() == item.getId()) {
+                        found = item;
+                        break;
+                    }
+                }
+
+                if (auctionUpdate.getAuctionStatus() == AuctionStatus.DELETED) {
+                    auctionItems.remove(found);
+                } else if (auctionUpdate.getAuctionStatus() == AuctionStatus.MODIFIED) {
+                    found = auctionUpdate.getAuctionItem();
+                }
+            }
         }
     }
 
