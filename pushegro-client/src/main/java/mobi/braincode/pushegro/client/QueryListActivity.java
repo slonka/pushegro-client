@@ -1,6 +1,7 @@
 package mobi.braincode.pushegro.client;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,6 +42,10 @@ public class QueryListActivity extends ActionBarActivity {
         queryListAdapter = new QueryListAdapter(this, queryItems);
 
         refreshActivity();
+
+        NotificationManager nm = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
+        nm.cancelAll();
     }
 
     private void refreshActivity() {
