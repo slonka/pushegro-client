@@ -2,6 +2,7 @@ package mobi.braincode.pushegro.client.rest.task;
 
 import android.os.AsyncTask;
 import mobi.braincode.pushegro.client.QueryListActivity;
+import mobi.braincode.pushegro.client.model.Auction;
 import mobi.braincode.pushegro.client.model.AuctionItem;
 import mobi.braincode.pushegro.client.rest.RestFacade;
 
@@ -24,8 +25,9 @@ public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, List<AuctionItem
     protected List<AuctionItem> doInBackground(Void... params) {
         final List<AuctionItem> auctionItems = new ArrayList<>();
         for (final String predicateId : predicateIds) {
-            List<AuctionItem> auctions = RestFacade.getAuctions(username, predicateId);
-            auctionItems.addAll(auctions);
+            List<Auction> auctions = RestFacade.getAuctions(username, predicateId);
+            System.out.println();
+//            auctionItems.addAll(auctions);
         }
         return auctionItems;
     }
