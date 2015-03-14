@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.software.shell.fab.ActionButton;
@@ -24,24 +25,9 @@ public class QueryListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_query_list);
-
         final QueryListAdapter queryListAdapter = new QueryListAdapter(this, queryItems);
 
-        ListView listView = (ListView) findViewById(R.id.query_list);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                queryItems.remove(position);
-                queryListAdapter.notifyDataSetChanged();
-                return true;
-            }
-        });
-
-        listView.setAdapter(queryListAdapter);
-
-        addButton = (ActionButton) findViewById(R.id.query_list_add_query);
-        addButton.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Set up the input
@@ -52,29 +38,55 @@ public class QueryListActivity extends ActionBarActivity {
                 input.setHint("Tytuł aukcji");
 
                 new AlertDialog.Builder(v.getContext())
-                    .setTitle("Wyszukiwanie")
-                        // Specify the list array, the items to be selected by default (null for none),
-                            // and the listener through which to receive callbacks when items are selected
+                        .setTitle("Wyszukiwanie")
+                                // Specify the list array, the items to be selected by default (null for none),
+                                // and the listener through which to receive callbacks when items are selected
                         .setView(input)
                                 // Set the action buttons
                         .setPositiveButton("Dodaj", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
+                                setContentView(R.layout.activity_query_list);
                                 String text = input.getText().toString();
                                 QueryItem queryItem = new QueryItem(text, 0);
                                 queryItems.add(queryItem);
                                 queryListAdapter.notifyDataSetChanged();
-                        }
-                    })
-                    .setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
+                            }
+                        })
+                        .setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
 
-                        }
-                    })
-                    .show();
+                            }
+                        })
+                        .show();
             }
-        });
+        };
+
+        if(queryItems.isEmpty()) {
+            setContentView(R.layout.activity_empty_query_list);
+
+            Button button = (Button) findViewById(R.id.empty_auctions_search);
+            button.setOnClickListener(onClickListener);
+
+        } else {
+            setContentView(R.layout.activity_query_list);
+
+            ListView listView = (ListView) findViewById(R.id.query_list);
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    queryItems.remove(position);
+                    queryListAdapter.notifyDataSetChanged();
+                    return true;
+                }
+            });
+
+            listView.setAdapter(queryListAdapter);
+
+            addButton = (ActionButton) findViewById(R.id.query_list_add_query);
+            addButton.setOnClickListener(onClickListener);
+        }
     }
 
     @Override
