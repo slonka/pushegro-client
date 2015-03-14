@@ -26,6 +26,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="16dp" android:layout_marginRight="16dp" android:hint="Nazwa użytkownika"
             android:background="@color/pushegro_orange_30"
+            android:textColor="@android:color/white"
             android:paddingTop="10dp" android:paddingBottom="10dp" android:textColorHint="@android:color/white"
             android:layout_below="@+id/login_icon"
             android:paddingLeft="10dp"/>

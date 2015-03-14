@@ -13,7 +13,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="To jest bardzo długa nazwa aukcji bla blalblavlflsdlelc eld leflwel lwel eldl lwlwl  "
             android:id="@+id/auction_list_item_title" android:layout_marginBottom="7dp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black" android:layout_toLeftOf="@+id/auction_list_item_last_changed"
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -30,6 +31,7 @@
             android:id="@+id/auction_list_item_last_changed" android:layout_alignParentTop="true" android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
     <ImageButton
+            android:padding="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/auction_list_item_important"
@@ -39,5 +41,5 @@
             android:layout_below="@+id/auction_list_item_last_changed"
             android:layout_alignRight="@+id/auction_list_item_last_changed"
             android:layout_alignEnd="@+id/auction_list_item_last_changed"
-            />
+            android:paddingRight="0dp"/>
 </RelativeLayout>
