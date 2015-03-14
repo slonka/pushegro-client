@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,10 +47,10 @@ public class AuctionListActivity extends ActionBarActivity {
 
     private ArrayList<AuctionItem> getAuctionItems() {
         ArrayList<AuctionItem> auctions = new ArrayList<>();
-        AuctionItem item1 = new AuctionItem("Maczeta JP2", 5087938677L, true, Calendar.getInstance(), "99999 PLN");
+        AuctionItem item1 = new AuctionItem(5087938677L, "Maczeta JP2", true, Calendar.getInstance(), "99999 PLN");
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 1);
-        AuctionItem item2 = new AuctionItem("Sztacheta JP3", 5127261454L, false, cal, "199999 PLN");
+        AuctionItem item2 = new AuctionItem(5127261454L, "Sztacheta JP3", false, cal, "199999 PLN");
 
         auctions.add(item1);
         auctions.add(item2);
