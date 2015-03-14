@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutionException;
 
 public class RestSender {
 
-    private static String BASE_URL = "http://10.0.2.102:8080";
+    private static String BASE_URL = "http://pushegro-server.herokuapp.com";
     private static DefaultHttpClient client = new DefaultHttpClient();
 
     public static HttpResponse post(String url, JSONObject jsonObject) throws IOException, ExecutionException, InterruptedException {
