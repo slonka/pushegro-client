@@ -2,16 +2,13 @@ package mobi.braincode.pushegro.client.rest.task;
 
 import android.os.AsyncTask;
 import mobi.braincode.pushegro.client.QueryListActivity;
+import mobi.braincode.pushegro.client.model.Auction;
 import mobi.braincode.pushegro.client.model.AuctionItem;
 import mobi.braincode.pushegro.client.rest.RestFacade;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-/**
- * Created by Grzegorz Miejski (SG0221133) on 3/14/2015.
- */
-public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, List<AuctionItem>> {
+public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, Map<String, List<AuctionItem>>> {
 
     private final String username;
     private final List<String> predicateIds;
@@ -24,18 +21,35 @@ public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, List<AuctionItem
     }
 
     @Override
-    protected List<AuctionItem> doInBackground(Void... params) {
-        final List<AuctionItem> auctionItems = new ArrayList<>();
+    protected Map<String, List<AuctionItem>> doInBackground(Void... params) {
+        Map<String, List<AuctionItem>> auctionItems = new HashMap<>();
         for (final String predicateId : predicateIds) {
-            List<AuctionItem> auctions = RestFacade.getAuctions(username, predicateId);
-            auctionItems.addAll(auctions);
+            ArrayList<AuctionItem> predicateAuctions = new ArrayList<>();
+            List<Auction> auctions = RestFacade.getAuctions(username, predicateId);
+
+            for (Auction auction : auctions) {
+                predicateAuctions.add(convertToAuctionItem(auction));
+            }
+
+            auctionItems.put(predicateId, predicateAuctions);
+            System.out.println();
+//            auctionItems.addAll(auctions);
         }
         return auctionItems;
     }
 
-    @Override
-    protected void onPostExecute(List<AuctionItem> auctionItems) {
-        super.onPostExecute(auctionItems);
-        queryListActivity.updateAuctions(auctionItems);
+    private AuctionItem convertToAuctionItem(Auction auction) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(auction.getEndDateTime());
+        return new AuctionItem(auction.getAuctionId(), auction.getTitle(), false, calendar, String.valueOf(auction.getPrice()));
     }
+
+
+    @Override
+    protected void onPostExecute(Map<String, List<AuctionItem>> auctionsByPredicate) {
+        super.onPostExecute(auctionsByPredicate);
+        queryListActivity.updateAuctions(auctionsByPredicate);
+    }
+
+
 }
