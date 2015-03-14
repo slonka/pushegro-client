@@ -4,14 +4,13 @@ import android.util.Log;
 import com.google.gson.Gson;
 import mobi.braincode.pushegro.client.model.Auction;
 import mobi.braincode.pushegro.client.model.AuctionList;
-import mobi.braincode.pushegro.client.model.QueryItem;
-import mobi.braincode.pushegro.client.model.AuctionItem;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -74,7 +73,7 @@ public class RestFacade {
         return responseText;
     }
 
-    public static List<AuctionItem> getAuctions(String username, String predicateId) {
+    public static List<Auction> getAuctions(String username, String predicateId) {
         String responseText = null;
         try {
             Gson gson = new Gson();
@@ -86,7 +85,7 @@ public class RestFacade {
             Log.e("Response error", e.getMessage());
 //            return "Unsuccessful registering";
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private static String sendRequest(String url, JSONObject jsonObject) throws IOException, ExecutionException, InterruptedException {
