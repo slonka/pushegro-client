@@ -49,7 +49,6 @@ public class GcmIntentService extends IntentService {
                 handleGcmMessage("Deleted messages on server: " + extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 showNotification(getApplicationContext(), "Pushegro wykryło zmiany!", generateNotificationMessage(predicatesNames), predicatesChanged);
-                handleGcmMessage(predicatesChanged);
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
