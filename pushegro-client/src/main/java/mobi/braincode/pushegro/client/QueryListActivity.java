@@ -60,6 +60,14 @@ public class QueryListActivity extends ActionBarActivity {
         nm.cancelAll();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        queryListAdapter = new QueryListAdapter(this, queryItems);
+        queryListAdapter.notifyDataSetChanged();
+        refreshActivity();
+    }
+
     private void refreshActivity() {
         if (queryItems.isEmpty()) {
             setContentView(R.layout.activity_empty_query_list);
@@ -137,10 +145,10 @@ public class QueryListActivity extends ActionBarActivity {
                         break;
                     }
                 }
-
                 if (auctionUpdate.getAuctionStatus() == AuctionStatus.DELETED) {
                     auctionItems.remove(found);
                 } else if (auctionUpdate.getAuctionStatus() == AuctionStatus.MODIFIED) {
+                    auctionUpdate.markNotViewed();
                     int i = auctionItems.indexOf(found);
                     auctionItems.remove(i);
                     auctionItems.add(i, auctionUpdate.getAuctionItem());
