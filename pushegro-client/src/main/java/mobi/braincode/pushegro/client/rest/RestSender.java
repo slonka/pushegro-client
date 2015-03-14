@@ -37,17 +37,6 @@ public class RestSender {
         return BASE_URL + relativeUrl;
     }
 
-    public static HttpResponse post(String url) {
-        final HttpPost httpRequest = new HttpPost(getAbsoluteUrl(url));
-        HttpResponse response = null;
-        try {
-            response = client.execute(httpRequest);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return response;
-    }
-
     public static HttpResponse get(String url) {
         final HttpGet httpRequest = new HttpGet(getAbsoluteUrl(url));
         HttpResponse response = null;

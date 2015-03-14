@@ -5,8 +5,10 @@ import mobi.braincode.pushegro.client.model.AuctionItem;
 import mobi.braincode.pushegro.client.model.QueryItem;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.util.List;
@@ -57,10 +59,11 @@ public class RestFacade {
     public static List<AuctionItem> getAuctions(String username, String predicateId) {
         String responseText = null;
         try {
-            HttpResponse response = RestSender.get(urlFor(username + "/" + predicateId));
+            HttpResponse response = RestSender.get(urlFor(username) + "/" + predicateId);
             String json = EntityUtils.toString(response.getEntity());
             JSONObject jsonObject = new JSONObject(json);
-
+            JSONArray jsonArray = new JSONArray(json);
+            new JSONTokener(json).nextValue();
             Log.i("Response received", responseText);
         } catch (JSONException | IOException e) {
             e.printStackTrace();

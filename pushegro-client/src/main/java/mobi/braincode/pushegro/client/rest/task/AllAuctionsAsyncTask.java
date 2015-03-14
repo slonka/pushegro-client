@@ -8,9 +8,6 @@ import mobi.braincode.pushegro.client.rest.RestFacade;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Grzegorz Miejski (SG0221133) on 3/14/2015.
- */
 public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, List<AuctionItem>> {
 
     private final String username;
