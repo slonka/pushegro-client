@@ -1,6 +1,7 @@
 package mobi.braincode.pushegro.client.rest;
 
 import android.util.Log;
+import mobi.braincode.pushegro.client.model.AuctionItem;
 import mobi.braincode.pushegro.client.model.QueryItem;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -8,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class RestFacade {
@@ -52,12 +54,29 @@ public class RestFacade {
         return responseText;
     }
 
+    public static List<AuctionItem> getAuctions(String username, String predicateId) {
+        String responseText = null;
+        try {
+            HttpResponse response = RestSender.get(urlFor(username + "/" + predicateId));
+            String json = EntityUtils.toString(response.getEntity());
+            JSONObject jsonObject = new JSONObject(json);
+
+            Log.i("Response received", responseText);
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+            Log.e("Response error", e.getMessage());
+//            return "Unsuccessful registering";
+        }
+        return null;
+    }
+
     private static String sendRequest(String url, JSONObject jsonObject) throws IOException, ExecutionException, InterruptedException {
         HttpResponse response = RestSender.post(url, jsonObject);
+        // TODO proper error handling - check response status
         return EntityUtils.toString(response.getEntity());
     }
 
     private static String urlFor(String username) {
-        return "/" + username;
+        return "/" + username + "/predicates";
     }
 }
