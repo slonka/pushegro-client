@@ -1,6 +1,7 @@
 package mobi.braincode.pushegro.client;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,8 +13,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.software.shell.fab.ActionButton;
 import mobi.braincode.pushegro.client.model.QueryItem;
+import mobi.braincode.pushegro.client.repository.SharedPreferencesFacade;
+import mobi.braincode.pushegro.client.rest.RestFacade;
 
 import java.util.ArrayList;
+
+import static mobi.braincode.pushegro.client.repository.SharedPreferencesProperties.PROPERTY_USERNAME;
 
 
 public class QueryListActivity extends ActionBarActivity {
@@ -21,10 +26,14 @@ public class QueryListActivity extends ActionBarActivity {
     ActionButton addButton;
     ArrayList<QueryItem> queryItems = new ArrayList<>();
 
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query_list);
+
+        context = getApplicationContext();
 
         final QueryListAdapter queryListAdapter = new QueryListAdapter(this, queryItems);
 
@@ -64,7 +73,13 @@ public class QueryListActivity extends ActionBarActivity {
                                 if (!text.trim().isEmpty()) {
                                     // TODO add validation
                                     QueryItem queryItem = new QueryItem(text, 0);
+
+                                    String username = SharedPreferencesFacade.getString(context, PROPERTY_USERNAME);
+
+                                    RestFacade.addWatcher(username, queryItem);
+
                                     queryItems.add(queryItem);
+
                                     queryListAdapter.notifyDataSetChanged();
                                 }
                             }
