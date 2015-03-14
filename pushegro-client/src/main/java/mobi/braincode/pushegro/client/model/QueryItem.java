@@ -12,11 +12,17 @@ public class QueryItem {
         return unvisitedCount;
     }
 
+    int id;
     String title;
     int unvisitedCount;
 
-    public QueryItem(String title, int unvisitedCount) {
+    public QueryItem(int id, String title, int unvisitedCount) {
+        this.id = id;
         this.title = title;
         this.unvisitedCount = unvisitedCount;
+    }
+
+    public int getId() {
+        return id;
     }
 }

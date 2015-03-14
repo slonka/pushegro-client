@@ -35,11 +35,11 @@ public class RestFacade {
         return responseText;
     }
 
-    public static String addWatcher(String username, QueryItem queryItem) {
+    public static String addWatcher(String username, String queryTitle) {
         String responseText = null;
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("keyword", queryItem.getTitle());
+            jsonObject.put("keyword", queryTitle);
 
             responseText = sendRequest(urlFor(username), jsonObject);
 
