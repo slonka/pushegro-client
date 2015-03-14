@@ -11,7 +11,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="To jest bardzo długa nazwa aukcji bla blalblavlflsdlelc eld leflwel lwel eldl lwlwl  "
-            android:id="@+id/textView" android:layout_marginBottom="7dp"
+            android:id="@+id/auction_list_item_title" android:layout_marginBottom="7dp"
             android:textColor="@android:color/black"/>
 
     <TextView
@@ -19,21 +19,23 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="100 PLN"
-            android:id="@+id/textView2"
-            android:layout_below="@+id/textView" android:layout_alignParentLeft="true"
+            android:id="@+id/auction_list_item_price"
+            android:layout_below="@+id/auction_list_item_title" android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5 dni"
-            android:id="@+id/textView3" android:layout_alignParentTop="true" android:layout_alignParentRight="true"
+            android:id="@+id/auction_list_item_last_changed" android:layout_alignParentTop="true" android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
+            android:id="@+id/auction_list_item_important"
             android:src="@drawable/auction_favorite_star_gray"
             android:background="@null"
-            android:layout_alignBottom="@+id/textView" android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" android:layout_marginBottom="16dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/auction_list_item_last_changed"
+            android:layout_alignRight="@+id/auction_list_item_last_changed"
+            android:layout_alignEnd="@+id/auction_list_item_last_changed"/>
 </RelativeLayout>
