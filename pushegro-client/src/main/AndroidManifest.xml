@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mobi.braincode.pushegro.client" >
+          package="mobi.braincode.pushegro.client">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-    <uses-permission android:name="mobi.braincode.pushegro.client.gcm.REGISTRATION"/>
     <uses-permission android:name="mobi.braincode.pushegro.client.REGISTRATION"/>
+    <uses-permission android:name="mobi.braincode.pushegro.client.gcm.REGISTRATION"/>
+    <uses-permission android:name="mobi.braincode.pushegro.client.rest.REGISTRATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="mobi.braincode.pushegro.client.permission.RECEIVE"/>
+    <uses-permission android:name="mobi.braincode.pushegro.client.gcm.permission.RECEIVE"/>
+    <uses-permission android:name="mobi.braincode.pushegro.client.rest.permission.RECEIVE"/>
 
-    <permission android:name="com.pushegro.gcmtest.app.permission.C2D_MESSAGE"
+    <permission android:name="mobi.braincode.pushegro.client.permission.C2D_MESSAGE"
                 android:protectionLevel="signature"/>
-    <uses-permission android:name="com.pushegro.gcmtest.app.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="mobi.braincode.pushegro.client.permission.C2D_MESSAGE"/>
 
     <application
-        android:allowBackup="true"
-        android:icon="@drawable/icon"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+            android:allowBackup="true"
+            android:icon="@drawable/icon"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name" >
+                android:name=".LoginActivity"
+                android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 

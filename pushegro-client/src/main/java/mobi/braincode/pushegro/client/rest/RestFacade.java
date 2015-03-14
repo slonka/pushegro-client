@@ -33,6 +33,4 @@ public class RestFacade {
         }
         return responseText;
     }
-
-
 }
