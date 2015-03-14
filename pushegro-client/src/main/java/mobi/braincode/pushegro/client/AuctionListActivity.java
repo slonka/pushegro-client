@@ -10,29 +10,37 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import mobi.braincode.pushegro.client.model.AuctionItem;
+import mobi.braincode.pushegro.client.model.QueryItem;
+import mobi.braincode.pushegro.client.persistence.QueryRepository;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.List;
 
 
 public class AuctionListActivity extends ActionBarActivity {
 
+
+    public static final String QUERY_LIST_ID = "queryListId";
     private ListView auctionListView;
     private final String AUCTION_LINK = "http://allegro.pl/ShowItem2.php?item=";
+    AuctionListAdapter auctionListAdapter;
+    List<AuctionItem> auctions ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ArrayList<AuctionItem> auctions = getAuctionItems();
+        String queryListId = getIntent().getStringExtra(QUERY_LIST_ID);
+
+         auctions = getAuctions(queryListId);
 
         if (auctions.isEmpty()) {
             setContentView(R.layout.activity_empty_auction_list);
         } else {
             setContentView(R.layout.activity_auction_list);
-            AuctionListAdapter adapter = new AuctionListAdapter(this, auctions);
+            auctionListAdapter = new AuctionListAdapter(this, auctions);
             auctionListView = (ListView) findViewById(R.id.auction_list_view);
-            auctionListView.setAdapter(adapter);
+            auctionListView.setAdapter(auctionListAdapter);
             auctionListView.setOnItemClickListener(new ListView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -45,20 +53,13 @@ public class AuctionListActivity extends ActionBarActivity {
         }
     }
 
-    private ArrayList<AuctionItem> getAuctionItems() {
-        ArrayList<AuctionItem> auctions = new ArrayList<>();
-        AuctionItem item1 = new AuctionItem(5087938677L, "Maczeta JP2", true, Calendar.getInstance(), "99999 PLN");
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 1);
-        AuctionItem item2 = new AuctionItem(5127261454L, "Sztacheta JP3", false, cal, "199999 PLN");
-
-        auctions.add(item1);
-        auctions.add(item2);
-
-        return auctions;
-
+    private List<AuctionItem> getAuctions(String queryId) {
+        if (queryId == null || queryId.isEmpty()) {
+            return new ArrayList<>();
+        }
+        QueryItem byId = QueryRepository.findById(queryId);
+        return byId.getAuctionItems();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -27,4 +27,14 @@ public class QueryRepository {
             }
         }
     }
+
+
+    public static QueryItem findById(String queryId) {
+        for (QueryItem queryItem : queryItems) {
+            if (queryItem.getId() == Integer.valueOf(queryId)) {
+                return                queryItem;
+            }
+        }
+        return null;
+    }
 }
