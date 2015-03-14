@@ -20,6 +20,19 @@ public class QueryItem {
     }
 
     int id;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setUnvisitedCount(int unvisitedCount) {
+        this.unvisitedCount = unvisitedCount;
+    }
+
     String title;
     int unvisitedCount;
     List<AuctionItem> auctionItems;

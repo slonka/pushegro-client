@@ -19,8 +19,7 @@ import com.hudomju.swipe.adapter.ListViewAdapter;
 import com.hudomju.swipe.adapter.ViewAdapter;
 import com.software.shell.fab.ActionButton;
 import mobi.braincode.pushegro.client.gcm.GcmIntentService;
-import mobi.braincode.pushegro.client.model.AuctionItem;
-import mobi.braincode.pushegro.client.model.QueryItem;
+import mobi.braincode.pushegro.client.model.*;
 import mobi.braincode.pushegro.client.persistence.QueryRepository;
 import mobi.braincode.pushegro.client.repository.SharedPreferencesFacade;
 import mobi.braincode.pushegro.client.repository.SharedPreferencesProperties;
@@ -112,6 +111,7 @@ public class QueryListActivity extends ActionBarActivity {
                         touchListener.undoPendingDismiss();
                     } else {
                         Intent intent = new Intent(QueryListActivity.this, AuctionListActivity.class);
+                        intent.putExtra(AuctionListActivity.QUERY_LIST_ID, String.valueOf(queryItems.get(position).getId()));
                         startActivity(intent);
                     }
                 }
@@ -122,6 +122,32 @@ public class QueryListActivity extends ActionBarActivity {
             ActionButton addButton = (ActionButton) findViewById(R.id.query_list_add_query);
             addButton.setOnClickListener(new OnAddButtonClickListener(queryListAdapter));
         }
+    }
+
+    public void updateAuctionList(List<AuctionUpdate> auctionUpdates, List<AuctionItem> auctionItems) {
+        for(AuctionUpdate auctionUpdate : auctionUpdates) {
+            if(auctionUpdate.getAuctionStatus() == AuctionStatus.NEW) {
+                auctionItems.add(auctionUpdate.getAuctionItem());
+            } else {
+                AuctionItem found = null;
+                for(AuctionItem item : auctionItems) {
+                    if(auctionUpdate.getAuctionItem().getId() == item.getId()) {
+                        found = item;
+                        break;
+                    }
+                }
+
+                if (auctionUpdate.getAuctionStatus() == AuctionStatus.DELETED) {
+                    auctionItems.remove(found);
+                } else if (auctionUpdate.getAuctionStatus() == AuctionStatus.MODIFIED) {
+                    int i = auctionItems.indexOf(found);
+                    auctionItems.remove(i);
+                    auctionItems.add(i, auctionUpdate.getAuctionItem());
+                }
+            }
+        }
+
+
     }
 
     @Override
@@ -262,8 +288,19 @@ public class QueryListActivity extends ActionBarActivity {
     }
 
     public void updateAuctions(Map<String, List<AuctionItem>> auctions) {
+        for (Map.Entry<String, List<AuctionItem>> queryId : auctions.entrySet()) {
+            QueryItem foundQueryItem = QueryRepository.findById(queryId.getKey());
+            foundQueryItem.setUnvisitedCount(queryId.getValue().size());
+            queryListAdapter.notifyDataSetChanged();
+
+            ArrayList<AuctionUpdate> auctionUpdates = AuctionsUpdater.getDifference(foundQueryItem.getAuctionItems(),
+                    queryId.getValue());
 
 
+            updateAuctionList(auctionUpdates, foundQueryItem.getAuctionItems());
+        }
     }
+
+
 
 }

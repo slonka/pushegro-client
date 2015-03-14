@@ -7,10 +7,10 @@ import java.util.*;
  */
 public class AuctionsUpdater {
 
-    List<AuctionUpdate> getDifference(List<AuctionItem> localItems, List<AuctionItem> remoteItems) {
+    public static ArrayList<AuctionUpdate> getDifference(List<AuctionItem> localItems, List<AuctionItem> remoteItems) {
         Map<Long, AuctionItem> auctionUpdates = new HashMap<>();
         Set<AuctionItem> remoteItemSet = new HashSet<>();
-        List<AuctionUpdate> result = new ArrayList<>();
+        ArrayList<AuctionUpdate> result = new ArrayList<>();
 
         for(AuctionItem item : localItems) {
             auctionUpdates.put(item.getId(), item);
