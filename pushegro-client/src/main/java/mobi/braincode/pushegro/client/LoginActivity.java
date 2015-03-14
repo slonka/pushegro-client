@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import mobi.braincode.pushegro.client.rest.RestFacade;
 
 
 public class LoginActivity extends Activity {
@@ -12,8 +16,21 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-    }
 
+        Button loginBtn = (Button) findViewById(R.id.loginBtn);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView usernameView = (TextView) findViewById(R.id.loginUsernameTxt);
+                String username = usernameView.getText().toString();
+
+                RestFacade.register(username, "regId");
+
+            }
+        });
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,7 +50,6 @@ public class LoginActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
