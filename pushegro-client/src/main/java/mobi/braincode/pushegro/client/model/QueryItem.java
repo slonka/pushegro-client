@@ -1,8 +1,5 @@
 package mobi.braincode.pushegro.client.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by slonka on 14.03.15.
  */
@@ -15,33 +12,30 @@ public class QueryItem {
         return unvisitedCount;
     }
 
-    String title;
-    int unvisitedCount;
     int id;
-    List<AuctionItem> auctionItemList = new ArrayList<>();
-
-    public void setUnvisitedCount(int unvisitedCount) {
-        this.unvisitedCount = unvisitedCount;
-    }
-
-    public int getId() {
-        return id;
-    }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public List<AuctionItem> getAuctionItemList() {
-        return auctionItemList;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public QueryItem(String title, int unvisitedCount) {
+    public void setUnvisitedCount(int unvisitedCount) {
+        this.unvisitedCount = unvisitedCount;
+    }
+
+    String title;
+    int unvisitedCount;
+
+    public QueryItem(int id, String title, int unvisitedCount) {
+        this.id = id;
         this.title = title;
         this.unvisitedCount = unvisitedCount;
     }
 
-    public void addAuctionItemList(AuctionItem auctionItem) {
-        auctionItemList.add(auctionItem);
+    public int getId() {
+        return id;
     }
 }
