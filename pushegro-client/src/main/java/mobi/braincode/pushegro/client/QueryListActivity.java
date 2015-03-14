@@ -42,6 +42,7 @@ public class QueryListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(SharedPreferencesFacade.getString(getApplicationContext(), SharedPreferencesProperties.PROPERTY_USERNAME));
         context = getApplicationContext();
         queryListAdapter = new QueryListAdapter(this, queryItems);
 
