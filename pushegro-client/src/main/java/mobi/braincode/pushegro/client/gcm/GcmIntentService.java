@@ -12,7 +12,9 @@ import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import mobi.braincode.pushegro.client.AuctionListActivity;
 import mobi.braincode.pushegro.client.LoginActivity;
+import mobi.braincode.pushegro.client.QueryListActivity;
 import mobi.braincode.pushegro.client.R;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -64,7 +66,7 @@ public class GcmIntentService extends IntentService {
                         .setContentText(text);
 
         // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(context, LoginActivity.class);
+        Intent resultIntent = new Intent(context, QueryListActivity.class);
         resultIntent.putExtra(GcmIntentService.SERVER_MESSAGE, predicatesChanged);
 
         // The stack builder object will contain an artificial back stack for the
