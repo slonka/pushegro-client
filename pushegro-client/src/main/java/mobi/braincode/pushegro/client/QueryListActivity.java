@@ -1,6 +1,7 @@
 package mobi.braincode.pushegro.client;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,13 +21,16 @@ import com.software.shell.fab.ActionButton;
 import mobi.braincode.pushegro.client.gcm.GcmIntentService;
 import mobi.braincode.pushegro.client.model.AuctionItem;
 import mobi.braincode.pushegro.client.model.QueryItem;
+import mobi.braincode.pushegro.client.persistence.QueryRepository;
 import mobi.braincode.pushegro.client.repository.SharedPreferencesFacade;
 import mobi.braincode.pushegro.client.repository.SharedPreferencesProperties;
 import mobi.braincode.pushegro.client.rest.RestFacade;
 import mobi.braincode.pushegro.client.rest.task.AllAuctionsAsyncTask;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static mobi.braincode.pushegro.client.repository.SharedPreferencesProperties.PROPERTY_USERNAME;
@@ -54,6 +58,10 @@ public class QueryListActivity extends ActionBarActivity {
         }
 
         refreshActivity();
+
+        NotificationManager nm = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
+        nm.cancelAll();
     }
 
     private void refreshActivity() {
@@ -148,12 +156,12 @@ public class QueryListActivity extends ActionBarActivity {
                             String text = input.getText().toString();
                             if (!text.trim().isEmpty()) {
                                 // TODO add validation
-                                final QueryItem queryItem = new QueryItem(text, 0);
+
 
                                 final String username = SharedPreferencesFacade.getString(context, PROPERTY_USERNAME);
 
 
-                                new AsyncTask<Void, Void, Void>() {
+                                new AsyncTask<String, Void, QueryItem>() {
                                     ProgressDialog dialog;
 
                                     @Override
@@ -162,16 +170,33 @@ public class QueryListActivity extends ActionBarActivity {
                                     }
 
                                     @Override
-                                    protected Void doInBackground(Void... params) {
+                                    protected QueryItem doInBackground(String... params) {
                                         Log.e(this.getClass().getSimpleName(), ">>>>>> Pre add watcher");
-                                        RestFacade.addWatcher(username, queryItem);
+                                        String rs = RestFacade.addWatcher(username, params[0]);
+                                        //{ "keyword": "tootot", "predicateId": 32 }
+                                        HashMap<String, Object> result =
+                                                null;
+                                        try {
+                                            result = new org.codehaus.jackson.map.ObjectMapper().readValue(rs, HashMap.class);
+                                        } catch (IOException e) {
+                                            Log.e(this.getClass().getSimpleName(), "Cannot parse response: " + result, e);
+                                        }
+                                        Integer predicateId = Integer.valueOf(result.get("predicateId").toString());
+                                        String keyword = result.get("keyword").toString();
+                                        QueryItem queryItem = new QueryItem(predicateId, keyword, 0);
                                         Log.e(this.getClass().getSimpleName(), ">>>>>> Post add watcher");
-                                        return null;
+                                        Log.e(this.getClass().getSimpleName(), ">>>>>> Received rs: " + rs);
+                                        return queryItem;
                                     }
 
                                     @Override
-                                    protected void onPostExecute(Void aVoid) {
+                                    protected void onPostExecute(QueryItem queryItem) {
+                                        Log.e(this.getClass().getSimpleName(), ">>>>>> Post execute");
                                         onCancelled();
+                                        queryItems.add(queryItem);
+                                        queryListAdapter.notifyDataSetChanged();
+                                        QueryRepository.addQuery(queryItem);
+                                        refreshActivity();
                                     }
 
                                     @Override
@@ -181,16 +206,12 @@ public class QueryListActivity extends ActionBarActivity {
                                     }
 
                                     @Override
-                                    protected void onCancelled(Void aVoid) {
+                                    protected void onCancelled(QueryItem aVoid) {
                                         onCancelled();
                                     }
-                                }.execute();
+                                }.execute(text);
 
 
-                                queryItems.add(queryItem);
-
-                                queryListAdapter.notifyDataSetChanged();
-                                refreshActivity();
                             }
                         }
                     })
