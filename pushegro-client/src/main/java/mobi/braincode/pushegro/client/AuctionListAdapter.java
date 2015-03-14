@@ -31,11 +31,19 @@ public class AuctionListAdapter extends ArrayAdapter<AuctionItem> {
         TextView lastChangedTextView = (TextView) convertView.findViewById(R.id.auction_list_item_last_changed);
         ImageButton importantImageButton = (ImageButton) convertView.findViewById(R.id.auction_list_item_important);
 
-        CharSequence lastChanged = DateUtils.getRelativeTimeSpanString(auction.getLastChanged().getTimeInMillis());
+        CharSequence lastChanged = DateUtils.getRelativeTimeSpanString(auction.getLastChanged().getTimeInMillis() * 1000);
 
         titleTextView.setText(auction.getTitle());
         priceTextView.setText(auction.getPrice());
         lastChangedTextView.setText(lastChanged);
+        if (auction.getLastChanged().getTimeInMillis() == 0) {
+            lastChangedTextView.setVisibility(View.INVISIBLE);
+        }
+
+        if ("0.0".equals(auction.getPrice())) {
+            priceTextView.setText("Nieznana cena");
+        }
+
         importantImageButton.setOnClickListener(new OnImportantClickListener(auction));
 
         if (auction.isImportant()) {

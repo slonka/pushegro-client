@@ -28,8 +28,10 @@ public class AuctionListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String queryListId = getIntent().getStringExtra(QUERY_LIST_ID);
 
-        final String queryListId = getIntent().getStringExtra(QUERY_LIST_ID);
+        setTitle(QueryRepository.findById(queryListId).getTitle());
+
 
          auctions = getAuctions(queryListId);
 
