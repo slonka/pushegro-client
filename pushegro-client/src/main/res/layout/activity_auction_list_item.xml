@@ -4,7 +4,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="16dp" android:paddingTop="10dp" android:paddingRight="16dp"
-                android:paddingBottom="10dp">
+                android:paddingBottom="10dp"
+                android:descendantFocusability="blocksDescendants">
 
     <TextView
             android:layout_width="289dp"
@@ -37,5 +38,6 @@
             android:layout_marginTop="10dp"
             android:layout_below="@+id/auction_list_item_last_changed"
             android:layout_alignRight="@+id/auction_list_item_last_changed"
-            android:layout_alignEnd="@+id/auction_list_item_last_changed"/>
+            android:layout_alignEnd="@+id/auction_list_item_last_changed"
+            />
 </RelativeLayout>
