@@ -6,12 +6,9 @@ import mobi.braincode.pushegro.client.model.Auction;
 import mobi.braincode.pushegro.client.model.AuctionItem;
 import mobi.braincode.pushegro.client.rest.RestFacade;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, List<AuctionItem>> {
+public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, Map<String, List<AuctionItem>>> {
 
     private final String username;
     private final List<String> predicateIds;
@@ -24,14 +21,17 @@ public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, List<AuctionItem
     }
 
     @Override
-    protected List<AuctionItem> doInBackground(Void... params) {
-        final List<AuctionItem> auctionItems = new ArrayList<>();
+    protected Map<String, List<AuctionItem>> doInBackground(Void... params) {
+        Map<String, List<AuctionItem>> auctionItems = new HashMap<>();
         for (final String predicateId : predicateIds) {
+            ArrayList<AuctionItem> predicateAuctions = new ArrayList<>();
             List<Auction> auctions = RestFacade.getAuctions(username, predicateId);
+
             for (Auction auction : auctions) {
-                auctionItems.add(convertToAuctionItem(auction));
+                predicateAuctions.add(convertToAuctionItem(auction));
             }
 
+            auctionItems.put(predicateId, predicateAuctions);
             System.out.println();
 //            auctionItems.addAll(auctions);
         }
@@ -46,9 +46,9 @@ public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, List<AuctionItem
 
 
     @Override
-    protected void onPostExecute(List<AuctionItem> auctionItems) {
-        super.onPostExecute(auctionItems);
-        queryListActivity.updateAuctions(auctionItems);
+    protected void onPostExecute(Map<String, List<AuctionItem>> auctionsByPredicate) {
+        super.onPostExecute(auctionsByPredicate);
+        queryListActivity.updateAuctions(auctionsByPredicate);
     }
 
 

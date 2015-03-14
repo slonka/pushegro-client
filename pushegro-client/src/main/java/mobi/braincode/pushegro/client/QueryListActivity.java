@@ -28,6 +28,7 @@ import mobi.braincode.pushegro.client.rest.task.AllAuctionsAsyncTask;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static mobi.braincode.pushegro.client.repository.SharedPreferencesProperties.PROPERTY_USERNAME;
 
@@ -204,7 +205,7 @@ public class QueryListActivity extends ActionBarActivity {
         }
     }
 
-    public void updateAuctions(List<AuctionItem> auctions) {
+    public void updateAuctions(Map<String, List<AuctionItem>> auctions) {
 
 
     }
