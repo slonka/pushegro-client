@@ -61,6 +61,9 @@ public class LoginActivity extends Activity {
                 String username = usernameView.getText().toString();
 
                 RestFacade.register(username, registrationId);
+
+                Intent intent = new Intent(context, QueryListActivity.class);
+                startActivity(intent);
             }
         });
 

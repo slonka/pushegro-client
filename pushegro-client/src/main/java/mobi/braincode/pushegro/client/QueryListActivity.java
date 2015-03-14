@@ -52,27 +52,30 @@ public class QueryListActivity extends ActionBarActivity {
                 input.setHint("Tytuł aukcji");
 
                 new AlertDialog.Builder(v.getContext())
-                    .setTitle("Wyszukiwanie")
-                        // Specify the list array, the items to be selected by default (null for none),
-                            // and the listener through which to receive callbacks when items are selected
+                        .setTitle("Wyszukiwanie")
+                                // Specify the list array, the items to be selected by default (null for none),
+                                // and the listener through which to receive callbacks when items are selected
                         .setView(input)
                                 // Set the action buttons
                         .setPositiveButton("Dodaj", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 String text = input.getText().toString();
-                                QueryItem queryItem = new QueryItem(text, 0);
-                                queryItems.add(queryItem);
-                                queryListAdapter.notifyDataSetChanged();
-                        }
-                    })
-                    .setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
+                                if (!text.trim().isEmpty()) {
+                                    // TODO add validation
+                                    QueryItem queryItem = new QueryItem(text, 0);
+                                    queryItems.add(queryItem);
+                                    queryListAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
 
-                        }
-                    })
-                    .show();
+                            }
+                        })
+                        .show();
             }
         });
     }
