@@ -30,7 +30,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
     public void showNotification(Context context, String title, String text) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.icon)
+                        .setSmallIcon(R.drawable.icon_clean)
                         .setContentTitle(title)
                         .setContentText(text);
 
