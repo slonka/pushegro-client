@@ -29,7 +29,7 @@ public class AuctionListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String queryListId = getIntent().getStringExtra(QUERY_LIST_ID);
+        final String queryListId = getIntent().getStringExtra(QUERY_LIST_ID);
 
          auctions = getAuctions(queryListId);
 
@@ -44,6 +44,9 @@ public class AuctionListActivity extends ActionBarActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Long auctionId = auctions.get(position).getId();
+
+                    QueryRepository.markAsSeen(queryListId, auctionId);
+
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(AUCTION_LINK + auctionId));
                     startActivity(i);

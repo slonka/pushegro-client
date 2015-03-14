@@ -1,5 +1,6 @@
 package mobi.braincode.pushegro.client.persistence;
 
+import mobi.braincode.pushegro.client.model.AuctionItem;
 import mobi.braincode.pushegro.client.model.QueryItem;
 
 import java.util.ArrayList;
@@ -28,7 +29,6 @@ public class QueryRepository {
         }
     }
 
-
     public static QueryItem findById(String queryId) {
         for (QueryItem queryItem : queryItems) {
             if (queryItem.getId() == Integer.valueOf(queryId)) {
@@ -36,5 +36,20 @@ public class QueryRepository {
             }
         }
         return null;
+    }
+
+    public static void markAsSeen(String queryListId, Long auctionId) {
+        QueryItem queryItem = QueryRepository.findById(queryListId);
+
+        if (queryItem != null) {
+            for (AuctionItem auctionItem : queryItem.getAuctionItems()) {
+                if (auctionItem.getId() == auctionId) {
+                    if (!auctionItem.isViewed()) {
+                        auctionItem.markViewed();
+                        queryItem.decreaseUnseen();
+                    }
+                }
+            }
+        }
     }
 }

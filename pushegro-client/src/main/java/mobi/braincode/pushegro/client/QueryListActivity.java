@@ -127,6 +127,7 @@ public class QueryListActivity extends ActionBarActivity {
     public void updateAuctionList(List<AuctionUpdate> auctionUpdates, List<AuctionItem> auctionItems) {
         for(AuctionUpdate auctionUpdate : auctionUpdates) {
             if(auctionUpdate.getAuctionStatus() == AuctionStatus.NEW) {
+                auctionUpdate.markNotViewed();
                 auctionItems.add(auctionUpdate.getAuctionItem());
             } else {
                 AuctionItem found = null;

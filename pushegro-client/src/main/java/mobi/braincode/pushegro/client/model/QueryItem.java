@@ -47,4 +47,8 @@ public class QueryItem {
     public int getId() {
         return id;
     }
+
+    public void decreaseUnseen() {
+        this.unvisitedCount--;
+    }
 }

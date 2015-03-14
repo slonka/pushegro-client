@@ -10,6 +10,7 @@ public class AuctionItem {
     private Calendar lastChanged;
     private String price;
     private boolean removed;
+    private boolean viewed;
 
     public AuctionItem(long id, String title, boolean important, Calendar lastChanged, String price) {
         this.title = title;
@@ -17,6 +18,7 @@ public class AuctionItem {
         this.important = important;
         this.lastChanged = lastChanged;
         this.price = price;
+        this.viewed = false;
     }
 
     public long getId() {
@@ -73,5 +75,17 @@ public class AuctionItem {
         result = 31 * result + (lastChanged != null ? lastChanged.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         return result;
+    }
+
+    public void markViewed() {
+        this.viewed = true;
+    }
+
+    public void markNotViewed() {
+        this.viewed = false;
+    }
+
+    public boolean isViewed() {
+        return viewed;
     }
 }

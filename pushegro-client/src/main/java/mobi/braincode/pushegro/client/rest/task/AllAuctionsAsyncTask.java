@@ -33,7 +33,6 @@ public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, Map<String, List
 
             auctionItems.put(predicateId, predicateAuctions);
             System.out.println();
-//            auctionItems.addAll(auctions);
         }
         return auctionItems;
     }

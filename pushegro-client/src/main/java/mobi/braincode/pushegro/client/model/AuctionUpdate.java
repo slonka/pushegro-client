@@ -27,4 +27,8 @@ public class AuctionUpdate {
     public void setAuctionItem(AuctionItem auctionItem) {
         this.auctionItem = auctionItem;
     }
+
+    public void markNotViewed() {
+        auctionItem.markNotViewed();
+    }
 }
