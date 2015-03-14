@@ -145,7 +145,7 @@ public class QueryListActivity extends ActionBarActivity {
 
                                     @Override
                                     protected void onPreExecute() {
-//                                        dialog = ProgressDialog.show(QueryListActivity.this, "Zapisywanie...", "", true, false);
+                                        dialog = ProgressDialog.show(QueryListActivity.this, "Zapisywanie...", "", true, false);
                                     }
 
                                     @Override
