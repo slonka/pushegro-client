@@ -60,7 +60,7 @@ public class GcmIntentService extends IntentService {
         result += "- " + predicatesNames.get(0);
         if (predicatesNames.size() > 1) {
             result += "\n- " + predicatesNames.get(1);
-        } else {
+        } else if (predicatesNames.size() > 2) {
             result += "\n" + "...";
         }
 
