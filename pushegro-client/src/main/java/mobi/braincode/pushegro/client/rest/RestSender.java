@@ -13,8 +13,8 @@ import java.util.concurrent.ExecutionException;
 
 public class RestSender {
 
-    private static String BASE_URL = "http://pushegro-server.herokuapp.com";
-    //    private static String BASE_URL = "http://10.0.2.251:8080";
+//    private static String BASE_URL = "http://pushegro-server.herokuapp.com";
+        private static String BASE_URL = "http://10.0.2.160:8080";
     private static DefaultHttpClient client = new DefaultHttpClient();
 
     public static HttpResponse post(String url, JSONObject jsonObject) throws IOException, ExecutionException, InterruptedException {
@@ -35,17 +35,6 @@ public class RestSender {
 
     private static String getAbsoluteUrl(String relativeUrl) {
         return BASE_URL + relativeUrl;
-    }
-
-    public static HttpResponse post(String url) {
-        final HttpPost httpRequest = new HttpPost(getAbsoluteUrl(url));
-        HttpResponse response = null;
-        try {
-            response = client.execute(httpRequest);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return response;
     }
 
     public static HttpResponse get(String url) {

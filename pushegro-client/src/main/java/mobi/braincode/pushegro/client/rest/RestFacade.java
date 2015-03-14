@@ -1,7 +1,9 @@
 package mobi.braincode.pushegro.client.rest;
 
 import android.util.Log;
-import mobi.braincode.pushegro.client.model.AuctionItem;
+import com.google.gson.Gson;
+import mobi.braincode.pushegro.client.model.Auction;
+import mobi.braincode.pushegro.client.model.AuctionList;
 import mobi.braincode.pushegro.client.model.QueryItem;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -54,16 +56,15 @@ public class RestFacade {
         return responseText;
     }
 
-    public static List<AuctionItem> getAuctions(String username, String predicateId) {
+    public static List<Auction> getAuctions(String username, String predicateId) {
         String responseText = null;
         try {
-            HttpResponse response = RestSender.get(urlFor(username + "/" + predicateId));
+            Gson gson = new Gson();
+            HttpResponse response = RestSender.get(urlFor(username) + "/" + predicateId);
             String json = EntityUtils.toString(response.getEntity());
-            JSONObject jsonObject = new JSONObject(json);
-
-            Log.i("Response received", responseText);
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
+            AuctionList auctionList = gson.fromJson(json, AuctionList.class);
+            return auctionList.getAuctions();
+        } catch (Exception e) {
             Log.e("Response error", e.getMessage());
 //            return "Unsuccessful registering";
         }
