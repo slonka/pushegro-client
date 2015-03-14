@@ -1,6 +1,7 @@
 package mobi.braincode.pushegro.client;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,13 +54,44 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 TextView usernameView = (TextView) findViewById(R.id.loginUsernameTxt);
-                String username = usernameView.getText().toString();
+                final String username = usernameView.getText().toString();
 
                 SharedPreferencesFacade.saveString(context, PROPERTY_USERNAME, username);
-                RestFacade.register(username, registrationId);
+                new AsyncTask<Void, Void, Void>() {
+                    ProgressDialog dialog;
 
-                Intent intent = new Intent(context, QueryListActivity.class);
-                startActivity(intent);
+                    @Override
+                    protected void onPreExecute() {
+                        dialog = ProgressDialog.show(LoginActivity.this, "Logowanie...", "", true, false);
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        Log.e(this.getClass().getSimpleName(), ">>>>>> Pre register");
+                        RestFacade.register(username, registrationId);
+                        Log.e(this.getClass().getSimpleName(), ">>>>>> Post register");
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        onCancelled();
+
+                        Intent intent = new Intent(context, QueryListActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    protected void onCancelled() {
+                        Log.e(this.getClass().getSimpleName(), ">>>>>> Cancelled");
+                        if (dialog != null) dialog.dismiss();
+                    }
+
+                    @Override
+                    protected void onCancelled(Void aVoid) {
+                        onCancelled();
+                    }
+                }.execute();
             }
         });
 
