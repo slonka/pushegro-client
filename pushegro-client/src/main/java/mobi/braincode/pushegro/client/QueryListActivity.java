@@ -28,11 +28,7 @@ import mobi.braincode.pushegro.client.rest.RestFacade;
 import mobi.braincode.pushegro.client.rest.task.AllAuctionsAsyncTask;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static mobi.braincode.pushegro.client.repository.SharedPreferencesProperties.PROPERTY_USERNAME;
 

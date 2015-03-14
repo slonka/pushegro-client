@@ -4,7 +4,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import mobi.braincode.pushegro.client.model.Auction;
 import mobi.braincode.pushegro.client.model.AuctionList;
-import mobi.braincode.pushegro.client.model.AuctionItem;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
@@ -75,7 +74,6 @@ public class RestFacade {
     }
 
     public static List<Auction> getAuctions(String username, String predicateId) {
-        String responseText = null;
         try {
             Gson gson = new Gson();
             HttpResponse response = RestSender.get(urlFor(username) + "/" + predicateId);
@@ -84,7 +82,6 @@ public class RestFacade {
             return auctionList.getAuctions();
         } catch (Exception e) {
             Log.e("Response error", e.getMessage());
-//            return "Unsuccessful registering";
         }
         return new ArrayList<>();
     }
