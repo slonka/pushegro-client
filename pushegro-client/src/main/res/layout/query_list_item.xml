@@ -2,23 +2,67 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="16dp">
+              android:layout_height="match_parent">
 
-    <TextView
-            android:layout_width="wrap_content"
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Zapytanie"
-            android:id="@+id/query_list_item_text" android:layout_centerVertical="true" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" android:layout_marginLeft="16dp"
-            android:layout_toLeftOf="@+id/query_list_item_unvisited"
-            android:layout_toStartOf="@+id/query_list_item_unvisited"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/query_list_item_unvisited" android:layout_centerVertical="true" android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" android:layout_marginRight="16dp" android:text="2"
-            android:layout_marginLeft="16dp"/>
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" android:id="@+id/relativeLayout"
+            android:padding="16dp"
+            android:height="32dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Zapytanie"
+                android:id="@+id/query_list_item_text" android:layout_centerVertical="true" android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" android:layout_marginLeft="16dp"
+                android:layout_toLeftOf="@+id/query_list_item_unvisited"
+                android:layout_toStartOf="@+id/query_list_item_unvisited"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/query_list_item_unvisited" android:layout_centerVertical="true" android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" android:layout_marginRight="16dp" android:text="2"
+                android:layout_marginLeft="16dp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="3"
+            android:height="32dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:background="@color/pushegro_orange">
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/txt_delete"
+                android:gravity="center_vertical"
+                android:text="Usuniete"
+                android:clickable="false"
+                android:layout_weight="2"
+                android:hapticFeedbackEnabled="true"
+                android:textColor="@color/fab_material_white"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:id="@+id/txt_undo"
+                android:text="Cofnij"
+                android:clickable="false"
+                android:layout_weight="1"
+                android:textColor="@color/fab_material_red_900"/>
+
+    </LinearLayout>
 </RelativeLayout>
