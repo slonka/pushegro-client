@@ -74,7 +74,6 @@ public class RestFacade {
     }
 
     public static List<Auction> getAuctions(String username, String predicateId) {
-        String responseText = null;
         try {
             Gson gson = new Gson();
             HttpResponse response = RestSender.get(urlFor(username) + "/" + predicateId);
@@ -83,7 +82,6 @@ public class RestFacade {
             return auctionList.getAuctions();
         } catch (Exception e) {
             Log.e("Response error", e.getMessage());
-//            return "Unsuccessful registering";
         }
         return new ArrayList<>();
     }

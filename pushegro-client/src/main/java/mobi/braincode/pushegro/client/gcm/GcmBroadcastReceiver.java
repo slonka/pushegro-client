@@ -9,7 +9,6 @@ import android.util.Log;
 
 public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i(this.getClass().getName(), "BROADCAST RECEIVER CALLED!");
