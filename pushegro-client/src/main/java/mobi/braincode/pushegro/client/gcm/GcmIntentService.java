@@ -1,16 +1,26 @@
 package mobi.braincode.pushegro.client.gcm;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import mobi.braincode.pushegro.client.LoginActivity;
+import mobi.braincode.pushegro.client.R;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GcmIntentService extends IntentService {
 
-    public static final String SERVER_MESSAGE = "serverMessage";
+    public static final String SERVER_MESSAGE = "predicatesChanged";
+    private AtomicInteger notificationId = new AtomicInteger();
 
     public GcmIntentService() {
         super("GcmIntentService");
@@ -18,8 +28,9 @@ public class GcmIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
         Bundle extras = intent.getExtras();
-        CharSequence predicatesChanged = extras.getCharSequence(SERVER_MESSAGE);
+        String predicatesChanged = extras.getCharSequence(SERVER_MESSAGE).toString();
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         String messageType = gcm.getMessageType(intent);
 
@@ -29,8 +40,8 @@ public class GcmIntentService extends IntentService {
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
                 handleGcmMessage("Deleted messages on server: " + extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                // TODO
-                handleGcmMessage(predicatesChanged.toString());
+                showNotification(getApplicationContext(), "Title", "notification from GCM", predicatesChanged);
+                handleGcmMessage(predicatesChanged);
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
@@ -43,5 +54,37 @@ public class GcmIntentService extends IntentService {
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void showNotification(Context context, String title, String text, String predicatesChanged) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.icon_clean)
+                        .setContentTitle(title)
+                        .setContentText(text);
+
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(context, LoginActivity.class);
+        resultIntent.putExtra(GcmIntentService.SERVER_MESSAGE, predicatesChanged);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(LoginActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+        mNotificationManager.notify(notificationId.addAndGet(1), mBuilder.build());
     }
 }

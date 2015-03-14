@@ -2,6 +2,7 @@ package mobi.braincode.pushegro.client;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import mobi.braincode.pushegro.client.gcm.GcmIntentService;
 import mobi.braincode.pushegro.client.rest.RestFacade;
 
 import java.io.IOException;
@@ -44,6 +46,9 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Intent intent = getIntent();
+        String predicatesToUpdate = intent.getStringExtra(GcmIntentService.SERVER_MESSAGE);
 
         context = getApplicationContext();
 
