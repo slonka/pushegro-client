@@ -1,11 +1,14 @@
 package mobi.braincode.pushegro.client;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -132,11 +135,44 @@ public class QueryListActivity extends ActionBarActivity {
                             String text = input.getText().toString();
                             if (!text.trim().isEmpty()) {
                                 // TODO add validation
-                                QueryItem queryItem = new QueryItem(text, 0);
+                                final QueryItem queryItem = new QueryItem(text, 0);
 
-                                String username = SharedPreferencesFacade.getString(context, PROPERTY_USERNAME);
+                                final String username = SharedPreferencesFacade.getString(context, PROPERTY_USERNAME);
 
-                                RestFacade.addWatcher(username, queryItem);
+
+                                new AsyncTask<Void, Void, Void>() {
+                                    ProgressDialog dialog;
+
+                                    @Override
+                                    protected void onPreExecute() {
+//                                        dialog = ProgressDialog.show(QueryListActivity.this, "Zapisywanie...", "", true, false);
+                                    }
+
+                                    @Override
+                                    protected Void doInBackground(Void... params) {
+                                        Log.e(this.getClass().getSimpleName(), ">>>>>> Pre add watcher");
+                                        RestFacade.addWatcher(username, queryItem);
+                                        Log.e(this.getClass().getSimpleName(), ">>>>>> Post add watcher");
+                                        return null;
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(Void aVoid) {
+                                        onCancelled();
+                                    }
+
+                                    @Override
+                                    protected void onCancelled() {
+                                        Log.e(this.getClass().getSimpleName(), ">>>>>> Cancelled");
+                                        if (dialog != null) dialog.dismiss();
+                                    }
+
+                                    @Override
+                                    protected void onCancelled(Void aVoid) {
+                                        onCancelled();
+                                    }
+                                }.execute();
+
 
                                 queryItems.add(queryItem);
 
