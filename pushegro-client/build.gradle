@@ -16,7 +16,11 @@ repositories {
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
     defaultConfig {
         applicationId "mobi.braincode.pushegro.client"
         minSdkVersion 16
@@ -39,4 +43,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.mcxiaoke.volley:library:1.0.+'
     compile 'com.hudomju:swipe-to-dismiss-undo:1.0'
+    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
 }

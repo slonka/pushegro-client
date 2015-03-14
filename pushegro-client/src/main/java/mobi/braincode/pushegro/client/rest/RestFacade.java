@@ -2,7 +2,6 @@ package mobi.braincode.pushegro.client.rest;
 
 import android.util.Log;
 import mobi.braincode.pushegro.client.model.AuctionItem;
-import mobi.braincode.pushegro.client.model.QueryItem;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
@@ -35,11 +34,11 @@ public class RestFacade {
         return responseText;
     }
 
-    public static String addWatcher(String username, QueryItem queryItem) {
+    public static String addWatcher(String username, String queryTitle) {
         String responseText = null;
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("keyword", queryItem.getTitle());
+            jsonObject.put("keyword", queryTitle);
 
             responseText = sendRequest(urlFor(username), jsonObject);
 
@@ -58,7 +57,7 @@ public class RestFacade {
         String responseText = null;
         try {
 
-            responseText = sendDeleteRequest(urlFor(username + "/" + predicateId));
+            responseText = sendDeleteRequest(urlFor(username) + "/" + predicateId);
 
             Log.i("Response received", responseText);
         } catch (IOException e) {
