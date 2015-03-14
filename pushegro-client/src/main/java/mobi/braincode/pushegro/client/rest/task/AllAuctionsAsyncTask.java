@@ -6,7 +6,6 @@ import mobi.braincode.pushegro.client.model.AuctionItem;
 import mobi.braincode.pushegro.client.rest.RestFacade;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,21 +25,10 @@ public class AllAuctionsAsyncTask extends AsyncTask<Void, Void, List<AuctionItem
 
     @Override
     protected List<AuctionItem> doInBackground(Void... params) {
-        final List<AuctionItem> auctionItems = Collections.synchronizedList(new ArrayList<AuctionItem>());
-
+        final List<AuctionItem> auctionItems = new ArrayList<>();
         for (final String predicateId : predicateIds) {
-            new AsyncTask<Void, Void, List<AuctionItem>>() {
-                @Override
-                protected List<AuctionItem> doInBackground(Void... params) {
-                    return RestFacade.getAuctions(username, predicateId);
-                }
-
-                @Override
-                protected void onPostExecute(List<AuctionItem> auctions) {
-                    super.onPostExecute(auctions);
-                    auctionItems.addAll(auctions);
-                }
-            }.execute();
+            List<AuctionItem> auctions = RestFacade.getAuctions(username, predicateId);
+            auctionItems.addAll(auctions);
         }
         return auctionItems;
     }
