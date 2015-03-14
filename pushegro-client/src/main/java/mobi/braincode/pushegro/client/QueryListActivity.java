@@ -3,6 +3,7 @@ package mobi.braincode.pushegro.client;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -25,7 +26,7 @@ import static mobi.braincode.pushegro.client.repository.SharedPreferencesPropert
 
 public class QueryListActivity extends ActionBarActivity {
 
-    List<QueryItem> queryItems;
+    private static List<QueryItem> queryItems = new ArrayList<>();
     QueryListAdapter queryListAdapter;
 
     Context context;
@@ -34,10 +35,6 @@ public class QueryListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
-
-        queryItems = new ArrayList<>();
-//        queryItems.add(new QueryItem("Maczeta JP2", 1));
-//        queryItems.add(new QueryItem("Komiksy Dragon Ball", 2));
         queryListAdapter = new QueryListAdapter(this, queryItems);
 
         refreshActivity();
@@ -52,6 +49,13 @@ public class QueryListActivity extends ActionBarActivity {
         } else {
             setContentView(R.layout.activity_query_list);
             ListView listView = (ListView) findViewById(R.id.query_list);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(QueryListActivity.this, AuctionListActivity.class);
+                    startActivity(intent);
+                }
+            });
             listView.setOnItemLongClickListener(new OnQueryLongClickListener(queryListAdapter));
             listView.setAdapter(queryListAdapter);
 
