@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.software.shell.fab.ActionButton;
@@ -28,6 +29,15 @@ public class QueryListActivity extends ActionBarActivity {
         final QueryListAdapter queryListAdapter = new QueryListAdapter(this, queryItems);
 
         ListView listView = (ListView) findViewById(R.id.query_list);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                queryItems.remove(position);
+                queryListAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
         listView.setAdapter(queryListAdapter);
 
         addButton = (ActionButton) findViewById(R.id.query_list_add_query);
