@@ -1,9 +1,6 @@
 package mobi.braincode.pushegro.client.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by slonka on 14.03.15.
@@ -12,10 +9,21 @@ public class AuctionsUpdater {
 
     List<AuctionUpdate> getDifference(List<AuctionItem> localItems, List<AuctionItem> remoteItems) {
         Map<Long, AuctionItem> auctionUpdates = new HashMap<>();
+        Set<AuctionItem> remoteItemSet = new HashSet<>();
         List<AuctionUpdate> result = new ArrayList<>();
 
         for(AuctionItem item : localItems) {
             auctionUpdates.put(item.getId(), item);
+        }
+
+        for(AuctionItem item : remoteItems) {
+            remoteItemSet.add(item);
+        }
+
+        for(AuctionItem localItem: localItems) {
+            if(!remoteItems.contains(localItem)) {
+                result.add(new AuctionUpdate(AuctionStatus.DELETED, localItem));
+            }
         }
 
         for(AuctionItem remoteItem : remoteItems) {
